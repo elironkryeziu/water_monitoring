@@ -1,0 +1,39 @@
+<p style="color: green"><%= notice %></p>
+
+<div class="row mt-5"> 
+  <% @sensors.each do |sensor| %>
+    <div class="col-12 col-md-6 col-xl-4 mb-3">
+      <div class="sensors-box">
+          <a href="/sensors/<%= sensor.id %>">
+          <img src="<%= image_url(sensor.image) %>" class="w-100"/>
+          <p><%= sensor.name %></p>
+        </a>
+      </div>
+    </div>
+     <% end %>
+  </div>
+
+  
+
+<!-- <table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Description</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @sensors.each do |sensor| %>
+    <tr>
+    <th scope="row"><%= sensor.id %></th>
+    <td><%= sensor.name %></td>
+    <td><%= sensor.description %></td>
+    <td><p>
+      <%= link_to "Show this sensor", sensor %>
+    </p></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table> -->

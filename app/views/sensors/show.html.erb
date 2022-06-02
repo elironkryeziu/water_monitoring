@@ -1,0 +1,82 @@
+
+
+<div class="back-to-sensors mt-3">
+  <!-- <%= link_to "Edit this sensor", edit_sensor_path(@sensor) %> | -->
+  <%= link_to "< Kthehu te sensoret", sensors_path %>
+
+  <!-- <%= button_to "Destroy this sensor", @sensor, method: :delete %> -->
+</div>
+
+<div class="current-val d-flex align-items-center mt-5 mb-3">
+  <span>Vlera momentale:&nbsp;</span>
+  <p id="value" class="blink_me">7.5</p><span><%= @sensor.unit %></span>
+</div>
+
+
+<div class="row">
+  <div class="col-12 col-md-8">
+    <span>Grafiku i matjeve:</span>
+    <%= line_chart @measures.order(created_at: :desc).last(20).pluck(:created_at, :value), min: @sensor.normal_low_value, max: @sensor.normal_high_value %>
+  </div>
+  <div class="col-12 col-md-4 mt-2">
+    <span>Vendndodhja e sensorit:</span>
+    <%= image_tag "https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=400x300&markers=size:small%7Ccolor:red%7C#{@sensor.latitude},#{@sensor.longitude}&key=AIzaSyB1d1c55ym9rEVfBIprlP4p4XAK9N8eiWY", alt: "Map", width: "100%" %>
+  </div>
+</div>
+
+
+
+<div class="row mt-5">
+  <span>FILTRO MATJET NE MES    </span>
+  <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    7.0
+  </button>
+  <span> DHE    </span>
+  <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    8.0
+  </button>
+  <div class="col-12">
+    <span>Matjet e fundit:</span>
+  </div>
+  <div class="col-12 col-md-8">
+    <table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Vlera</th>
+      <th scope="col">Koha</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @measures.order(created_at: :desc).first(20).each do |measure| %>
+    <tr>
+      <th scope="row"><%= measure.id %></th>
+      <td><%= measure.value %> <%= @sensor.unit %> </td>
+      <td><%= measure.created_at %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+  </div>
+</div>
+
+<script>
+  var intervalId = window.setInterval(function(){
+    const normal_low = parseInt('<%= @sensor.normal_low_value.to_i %>');
+    const normal_high = parseInt('<%= @sensor.normal_high_value.to_i %>');
+    const nr = getRandomFloat(normal_low, normal_high)
+    document.getElementById('value').innerText = nr.toString()
+    // if (nr > 7.2 && nr < 7.8) {
+      // document.getElementById('value').style.color = "green";
+    // } else {
+      // document.getElementById('value').style.color = "red";
+    // }
+  }, 5000);
+    
+  function getRandomFloat(min, max) {
+    const str = (Math.random() * (max - min) + min).toFixed(2);
+
+    return parseFloat(str);
+  }
+
+</script>
